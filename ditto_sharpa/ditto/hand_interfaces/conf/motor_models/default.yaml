@@ -1,0 +1,65 @@
+# @package motor_models
+
+# Motor model specifications
+XM430:
+  # Hardware specs (based on XM430-W350-T specifications)
+  name: "XM430"
+  resolution: 4096          # 12-bit resolution
+  max_position: 4095
+  min_position: 0
+  max_velocity_rpm: 46      # Maximum no-load speed in RPM
+  max_velocity_units: 201   # 46 RPM / 0.229 RPM per unit = ~201 units
+  max_current_amps: 2.3     # Maximum stall current in Amperes
+  max_current_units: 2300   # 2.3A * 1000 = 2300 mA (Dynamixel units)
+  
+  # Default units: 
+  default_current_units: 2.69   # mA
+  default_velocity_units: 0.229 # rpm
+
+  # Default control settings for this motor model
+  default_p_gain: 500
+  default_i_gain: 0
+  default_d_gain: 0
+  default_velocity_limit: 150  # Conservative default
+
+XC330:
+  # Hardware specs (based on XC330-M288-T specifications)
+  name: "XC330"
+  resolution: 4096          # 12-bit resolution, 4096 counts per revolution
+  max_position: 4095
+  min_position: 0
+  max_velocity_rpm: 104     # Maximum no-load speed in RPM
+  max_velocity_units: 454   # 104 RPM / 0.229 RPM per unit = ~454 units
+  max_current_amps: 1.5     # Maximum stall current in Amperes
+  max_current_units: 1500   # 1.5A * 1000 = 1500 mA (Dynamixel units)
+  
+  # Default units: 
+  default_current_units: 1.0    # mA
+  default_velocity_units: 0.229 # rpm
+
+  # Default control settings for this motor model
+  default_p_gain: 300
+  default_i_gain: 0
+  default_d_gain: 0
+  default_velocity_limit: 200  # Conservative default
+
+XH540:
+  # Hardware specs (based on XH540-W270-T specifications)
+  name: "XH540"
+  resolution: 4096          # 12-bit resolution, 4096 counts per revolution
+  max_position: 4095
+  min_position: 0
+  max_velocity_rpm: 234     # Maximum no-load speed in RPM
+  max_velocity_units: 1023   # 104 RPM / 0.229 RPM per unit = ~454 units
+  max_current_amps: 5.5     # Maximum stall current in Amperes
+  max_current_units: 2047   # 5500 mA / 2.69 mA per unit = 2047 units (Dynamixel units)
+  
+  # Default units: 
+  default_current_units: 2.69    # mA
+  default_velocity_units: 0.229 # rpm
+
+  # Default control settings for this motor model
+  default_p_gain: 300
+  default_i_gain: 0
+  default_d_gain: 0
+  default_velocity_limit: 200  # Conservative default

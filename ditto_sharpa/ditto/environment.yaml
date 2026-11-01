@@ -1,0 +1,13 @@
+name: ditto
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip=22.2.2
+  - numpy=1.23.3
+  - matplotlib=3.6.1
+  - hydra-core==1.2.0
+
+  - pip:
+    - dynamixel-sdk==3.8.4
+    - dynamixel_u2d2 @ git+https://github.com/joaquin-ps/dynamixel_u2d2.git

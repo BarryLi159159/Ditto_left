@@ -1,0 +1,16 @@
+# @package u2d2
+
+# Dual U2D2 configuration for separate leader/follower chains
+follower:
+  usb_port: "/dev/ttyUSB0"  # Follower U2D2 (on robot arm)
+  baudrate: 4000000
+
+leader:
+  usb_port: "/dev/ttyUSB1"  # Leader U2D2 (local)
+  baudrate: 4000000
+
+# Enable dual U2D2 configuration
+use_dual_u2d2: true
+
+# Set to true for testing without hardware
+fake_u2d2: false

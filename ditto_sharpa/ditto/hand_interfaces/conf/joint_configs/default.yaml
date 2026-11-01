@@ -1,0 +1,10 @@
+# @package joint_configs
+
+# Default joint configuration (applies to all motors unless overridden)
+default:
+  motor_model: "XM430"
+  zero_position: 2048  # Default zero position in encoder counts
+  min_angle_deg: -90   # Default -90 degrees
+  max_angle_deg: 90    # Default +90 degrees
+  transmission_ratio: 1.0  # Default transmission ratio
+  direction: 1         # Default direction (1 or -1)

@@ -1,0 +1,28 @@
+# @package hand_config
+
+control_frequency: 250
+
+leader:
+  mode: torque_off
+  motor_ids: [22]
+  general_settings: {}
+  joint_settings: {}
+
+follower:
+  mode: position
+  motor_ids: [122]
+  offsets: {122: 0}
+  general_settings:
+    velocity_limit: 150
+    p_gain: 1000
+    i_gain: 0
+    d_gain: 60
+  joint_settings:
+  - motor_id: 122
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      min_angle_deg: -60
+      max_angle_deg: 90
+      transmission_ratio: 1.0
+      direction: 1

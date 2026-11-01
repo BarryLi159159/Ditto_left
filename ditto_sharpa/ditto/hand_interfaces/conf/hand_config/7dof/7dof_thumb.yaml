@@ -1,0 +1,104 @@
+# @package hand_config
+
+control_frequency: 400
+
+leader:
+  mode: current
+  motor_ids: [114] #[111, 112, 113, 114]
+  general_settings:
+    current_limit: 1500
+    current_command: 0
+  joint_settings:
+  # - motor_id: 111
+  #   current_control:
+  #     enable_force_rendering: true
+  #     force_rendering_gain: 0.25
+  #     force_rendering_alpha: 0.95
+  #     force_rendering_threshold: 0.0 # 50.0
+  #     force_rendering_max_current: 200
+  #   joint_settings:
+  #     motor_model: XC330
+  # - motor_id: 112
+  #   current_control:
+  #     enable_force_rendering: true
+  #     force_rendering_gain: 0.2
+  #     force_rendering_alpha: 0.95
+  #     force_rendering_threshold: 0.0 # 50.0
+  #     force_rendering_max_current: 200
+  #   joint_settings:
+  #     motor_model: XC330
+
+  # - motor_id: 113
+  #   current_control:
+  #     enable_force_rendering: true
+  #     force_rendering_gain: 0.40
+  #     force_rendering_alpha: 0.95
+  #     force_rendering_threshold: 100.0 
+  #     gradual_rendering: true
+  #     force_rendering_max_current: 200
+  #   joint_settings:
+  #     motor_model: XC330
+  
+  # - motor_id: 114
+  #   current_control:  
+  #     enable_force_rendering: true
+  #     force_rendering_gain: 0.75
+  #     force_rendering_alpha: 0.95
+  #     force_rendering_threshold: 70.0 # 50.0
+  #     gradual_rendering: true # Start force from 0 at threshold
+  #     force_rendering_max_current: 200
+  #   joint_settings:
+  #     motor_model: XC330
+
+follower:
+  mode: position
+  motor_ids: [14] #[11, 12, 13, 14]
+  offsets: {14: 0}
+  general_settings:
+    velocity_limit: 200
+    p_gain: 1000
+    i_gain: 0
+    d_gain: 60
+  joint_settings:
+  # - motor_id: 11
+  #   joint_settings:
+  #     motor_model: XM430
+  #     zero_position: 2048
+  #     min_angle_deg: -45
+  #     max_angle_deg: 90
+  #     # direction: 1
+  # - motor_id: 12
+  #   joint_settings:
+  #     motor_model: XM430
+  #     zero_position: 1365 # 2219
+  #     min_angle_deg: -90
+  #     max_angle_deg: 90
+  #     # direction: 1
+
+  # - motor_id: 13
+  #   motor_settings:
+  #     velocity_limit: 300
+  #     p_gain: 1500
+  #     i_gain: 0
+  #     d_gain: 75
+  #   joint_settings:
+  #     motor_model: XM430
+  #     zero_position: 2048
+  #     min_angle_deg: -90
+  #     max_angle_deg: 10
+  #     # direction: 1
+
+  - motor_id: 14
+    motor_settings:
+      velocity_limit: 300
+      p_gain: 1500
+      i_gain: 0
+      d_gain: 75
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048 
+      min_angle_deg: -90
+      max_angle_deg: 0
+      # direction: 1
+  
+

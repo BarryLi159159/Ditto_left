@@ -1,0 +1,13 @@
+# @package hand_config
+
+control_frequency: 250
+
+leader:
+  mode: torque_off
+  motor_ids: [11, 21]
+  general_settings: {}
+
+follower:
+  mode: none
+  
+

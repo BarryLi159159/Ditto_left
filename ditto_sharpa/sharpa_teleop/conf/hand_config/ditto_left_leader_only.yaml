@@ -1,0 +1,64 @@
+# @package hand_config
+#
+# LEFT-hand Ditto leader only (torque off): encoders, no force feedback.
+# Motors: index 121–123 | thumb 111, 112, 114 (3-motor thumb, no 113; no middle).
+# Pair with the mirrored URDF retargeting/assets/ditto_left_leader.
+#
+# zero_position: calibrated 2026-10-30 by matching the mirrored URDF to the
+# user's hand in the viser viewer (live offset sliders), starting from the
+# open-hand encoder counts. Thumb zeros sit ~70-85 deg from the relaxed thumb,
+# like the right hand (URDF thumb q=0 is the thumb straight up, not relaxed). direction: every motor on this build counts the opposite way
+# from the right hand (all -1), as expected for a mirrored mechanism.
+# Verified joint by joint against the mirrored URDF on 2026-10-30.
+
+control_frequency: 200
+
+verbose: false
+show_current_breakdown: false
+show_perf: false
+
+leader:
+  mode: torque_off
+  sync_read_mode: pos_vel
+  motor_ids: [121, 122, 123, 111, 112, 114]
+  general_settings: {}
+  joint_settings:
+  - motor_id: 121            # index_joint_0 (sideways)
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 1979
+      direction: -1
+  - motor_id: 122            # index_joint_1 (MCP flex)
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 1998
+      direction: -1
+  - motor_id: 123            # index_joint_2 (PIP flex)
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2075
+      direction: -1
+  - motor_id: 111            # thumb_joint_0 (swing)
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2037
+      direction: -1
+  - motor_id: 112            # thumb_joint_1
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 1999
+      direction: -1
+  - motor_id: 114            # thumb_joint_3
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2076
+      direction: -1
+
+follower:
+  mode: none

@@ -1,0 +1,17 @@
+# @package _global_
+
+defaults:
+  - u2d2: default
+  - hand_config: none
+  - motor_models: default
+  - joint_configs: default
+  - _self_
+
+# Configuration metadata
+config_name: "teleop_control"
+description: "Teleop control (idle by default — pass hand_config=... for a physical hand)"
+
+control_frequency: 200
+verbose: false
+benchmark: false
+show_current_breakdown: false

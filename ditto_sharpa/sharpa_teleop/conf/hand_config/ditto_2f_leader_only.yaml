@@ -1,0 +1,47 @@
+# @package hand_config
+#
+# 2-finger Ditto leader only (torque off): encoders, no force feedback.
+# Motors: index 121–123 | thumb 111–114. Default for viewer without haptics.
+
+control_frequency: 200
+
+verbose: false
+show_current_breakdown: false
+show_perf: false  # to show loop frequency performance
+
+leader:
+  mode: torque_off
+  motor_ids: [121, 122, 123, 111, 112, 113, 114]
+  general_settings: {}
+  joint_settings:
+  - motor_id: 121
+    plot_joint: true   # plotting tools skip joints set false
+    joint_settings:
+      motor_model: XC330
+  - motor_id: 122
+    plot_joint: true   # plotting tools skip joints set false
+    joint_settings:
+      motor_model: XC330
+  - motor_id: 123
+    plot_joint: true   # plotting tools skip joints set false
+    joint_settings:
+      motor_model: XC330
+  - motor_id: 111
+    plot_joint: true   # plotting tools skip joints set false
+    joint_settings:
+      motor_model: XC330
+  - motor_id: 112
+    plot_joint: true   # plotting tools skip joints set false
+    joint_settings:
+      motor_model: XC330
+  - motor_id: 113
+    plot_joint: true   # plotting tools skip joints set false
+    joint_settings:
+      motor_model: XC330
+  - motor_id: 114
+    plot_joint: true   # plotting tools skip joints set false
+    joint_settings:
+      motor_model: XC330
+
+follower:
+  mode: none

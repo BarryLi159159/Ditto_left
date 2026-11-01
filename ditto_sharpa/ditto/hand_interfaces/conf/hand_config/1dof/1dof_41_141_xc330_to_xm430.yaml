@@ -1,0 +1,42 @@
+# @package hand_config
+# NOTE: This configuration has not been adapted to new units and motor model specific conversions.
+
+control_frequency: 250
+
+leader:
+  mode: current
+  motor_ids:
+  - 41
+  general_settings:
+    current_limit: 2300
+    current_command: 0
+  joint_settings:
+  - motor_id: 41
+    current_control:
+      enable_coulomb_comp: false
+      enable_static_comp: false
+      enable_damping_comp: false
+      enable_force_rendering: true
+      force_rendering_gain: 0.9 # 0.2
+      force_rendering_alpha: 0.8 # 0.8
+      force_rendering_threshold: 0.1
+      force_rendering_max_current: 80 # 80
+follower:
+  mode: position
+  motor_ids:
+  - 141
+  offsets: {141: 0}
+  general_settings:
+    velocity_limit: 500
+    p_gain: 1000
+    i_gain: 0
+    d_gain: 60
+  joint_settings:
+  - motor_id: 141
+    joint_settings:
+      motor_model: XM430
+      zero_position: 2048
+      min_angle_deg: -110
+      max_angle_deg: 100
+      transmission_ratio: 1.0
+      direction: 1

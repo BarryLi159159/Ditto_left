@@ -1,0 +1,77 @@
+# @package hand_config
+
+control_frequency: 200
+
+leader:
+  mode: current
+  motor_ids: [11, 21]
+  general_settings:
+    current_limit: 2300
+  joint_settings:
+  - motor_id: 11
+    # joint_settings:
+      # direction: -1
+    current_control:
+      enable_coulomb_comp: true
+      enable_static_comp: true
+      enable_damping_comp: false
+      enable_force_rendering: true
+      mu_coulomb_cw: 6 # 2
+      mu_coulomb_ccw: 12 # 5
+      mu_static_amplitude: 2.0 # 1.0
+      static_threshold_cw: 0.014 # 0.007
+      static_threshold_ccw: 0.014 # 0.007
+      static_frequency: 200.0 # 250.0
+      mu_damping: 0.07 # 0.03
+      force_rendering_gain: 0.12
+      force_rendering_alpha: 0.95
+      force_rendering_threshold: 150.0 # 50.0
+      force_rendering_max_current: 2300
+    joint_settings:
+      motor_model: XM430
+  - motor_id: 21
+    # joint_settings:
+      # direction: 1
+    current_control:
+      enable_coulomb_comp: true
+      enable_static_comp: true
+      enable_damping_comp: false
+      enable_force_rendering: true
+      mu_coulomb_cw: 6.0 # 2.0
+      mu_coulomb_ccw: 20.0 # 9.0
+      mu_static_amplitude: 2.0 # 1.0
+      static_threshold_cw: 0.014 # 0.007
+      static_threshold_ccw: 0.014 # 0.007
+      static_frequency: 200.0 # 250.0
+      mu_damping: 0.07 # 0.03
+      force_rendering_gain: 0.12
+      force_rendering_alpha: 0.95
+      force_rendering_threshold: 150.0 # 50.0
+      force_rendering_max_current: 2300
+    joint_settings:
+      motor_model: XM430
+
+follower:
+  mode: position
+  motor_ids: [111, 121]
+  offsets: {111: 0, 121: 0}
+  general_settings:
+    velocity_limit: 200
+    p_gain: 1000  
+    i_gain: 0
+    d_gain: 60
+  joint_settings:
+  - motor_id: 111
+    joint_settings:
+      zero_position: 2048
+      motor_model: XM430
+      min_angle_deg: -45
+      max_angle_deg: 70
+      # direction: -1
+  - motor_id: 121
+    joint_settings:
+      zero_position: 2048
+      motor_model: XM430
+      min_angle_deg: -70
+      max_angle_deg: 45
+      # direction: 1

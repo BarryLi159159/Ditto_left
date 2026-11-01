@@ -1,0 +1,116 @@
+# @package hand_config
+#
+# Index-only tuning config (motors 121–123). Joint position + 50% tactile /
+# 50% measured force. Gains, damping, filters, and joint_map copied from
+# ditto_2f_blend / ditto_3f_blend index.
+
+control_frequency: 250
+verbose: true
+show_current_breakdown: false
+show_perf: false  # to show loop frequency performance
+
+leader:
+  mode: current
+  sync_read_mode: pos_vel
+  motor_ids: [121, 122, 123]
+  general_settings:
+    current_limit: 1400
+    current_command: 0
+  joint_settings:
+
+  # < ----- INDEX (tactile + measured) ----- >
+
+  - motor_id: 121
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 40.0
+      force_rendering_damping_velocity_threshold: 0.3
+      force_rendering_damping_max_current: 30
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.3 # 0.2
+      enable_force_rendering_adaptive_gain: true
+      force_rendering_adaptive_velocity_coeff: 2.0
+      force_rendering_alpha: 0.3
+      force_rendering_threshold_positive: 15
+      force_rendering_threshold_negative: 15
+      force_rendering_max_current: 80
+      command_rate_limit_mA_per_s: 300.0
+
+  - motor_id: 122
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 70.0
+      force_rendering_damping_velocity_threshold: 0.3
+      force_rendering_damping_max_current: 55
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.4 # 0.4
+      enable_force_rendering_adaptive_gain: true
+      force_rendering_adaptive_velocity_coeff: 5.0
+      force_rendering_alpha: 0.5
+      force_rendering_threshold_positive: 35
+      force_rendering_threshold_negative: 35
+      force_rendering_max_current: 200 # 160
+      command_rate_limit_mA_per_s: 500.0
+
+  - motor_id: 123
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 60.0
+      force_rendering_damping_velocity_threshold: 1.0
+      force_rendering_damping_max_current: 50
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.6 # 0.4
+      enable_force_rendering_adaptive_gain: true
+      force_rendering_adaptive_velocity_coeff: 5.0
+      force_rendering_alpha: 0.5
+      force_rendering_threshold_positive: 50
+      force_rendering_threshold_negative: 50
+      force_rendering_max_current: 160 # 120
+      command_rate_limit_mA_per_s: 400.0
+
+follower:
+  mode: none
+
+control:
+  fingers:
+    index:
+      position: joint
+      force:
+        tactile: 0.5
+        measured: 0.5
+  joint_map:
+    index:
+    - {ditto_joint: index_joint_0, sharpa_joint: right_index_MCP_AA, scale: 1.0}
+    - {ditto_joint: index_joint_1, sharpa_joint: right_index_MCP_FE, scale: 1.0}
+    - {ditto_joint: index_joint_2, sharpa_joint: right_index_PIP, scale: 1.0}
+
+force_render:
+  modality_filters:
+    tactile:
+      torque_filter_alpha: 0.05 # 0.25
+    measured:
+      torque_filter_alpha: 0.05 # 0.08
+    estimate:
+      torque_filter_alpha: 0.05 # 0.12
+  joints:
+  - motor_id: 121
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 1.0
+  - motor_id: 122
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 1.0
+  - motor_id: 123
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 1.0

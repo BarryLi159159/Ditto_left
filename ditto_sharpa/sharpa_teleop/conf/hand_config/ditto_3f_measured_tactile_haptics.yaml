@@ -1,0 +1,315 @@
+# @package hand_config
+#
+# 3-finger Ditto (index + middle + thumb):
+#   index / middle: joint position + measured Sharpa joint torque
+#   thumb:          retarget IK + tactile force
+# plus LRA vibration haptics on thumb/index/middle via thumb_index_middle.yaml
+# Motors: index 121–123 | middle 131–133 | thumb 111, 112, 114 (113 removed).
+# Middle current_control / ROM copied from index (ditto_2f_measured_tactile).
+
+control_frequency: 250
+verbose: true
+show_current_breakdown: false
+
+leader:
+  mode: current
+  sync_read_mode: pos_vel
+  motor_ids: [121, 122, 123, 131, 132, 133, 111, 112, 114]
+  general_settings:
+    current_limit: 1400
+    current_command: 0
+
+  # Policy Sharpa->Ditto guidance: one gain table for every intervention
+  # phase (P alignment, running policy, X release), shared by the main GUI
+  # deployment and the standalone intervention console. Values override the
+  # profile-wide fallbacks in ditto_x/configs/hand/default.yaml. Viser's live
+  # tuning panel changes the running controller only; copy final values here
+  # to persist them.
+  policy_projection:
+    index_joint_0:  {kp_ma_per_rad: 550, kd_ma_per_rad_s: 8, max_current_ma: 160, min_moving_current_ma: 25, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    index_joint_1:  {kp_ma_per_rad: 750, kd_ma_per_rad_s: 8, max_current_ma: 200, min_moving_current_ma: 30, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    index_joint_2:  {kp_ma_per_rad: 450, kd_ma_per_rad_s: 8, max_current_ma: 160, min_moving_current_ma: 30, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    middle_joint_0: {kp_ma_per_rad: 550, kd_ma_per_rad_s: 8, max_current_ma: 160, min_moving_current_ma: 25, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    middle_joint_1: {kp_ma_per_rad: 750, kd_ma_per_rad_s: 8, max_current_ma: 200, min_moving_current_ma: 30, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    middle_joint_2: {kp_ma_per_rad: 450, kd_ma_per_rad_s: 8, max_current_ma: 160, min_moving_current_ma: 30, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    thumb_joint_0:  {kp_ma_per_rad: 550, kd_ma_per_rad_s: 8, max_current_ma: 200, min_moving_current_ma: 30, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    thumb_joint_1:  {kp_ma_per_rad: 500, kd_ma_per_rad_s: 8, max_current_ma: 200, min_moving_current_ma: 30, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+    thumb_joint_3:  {kp_ma_per_rad: 425, kd_ma_per_rad_s: 8, max_current_ma: 160, min_moving_current_ma: 30, min_moving_error_deg: 1.7, position_tolerance_deg: 1.0}
+
+  joint_settings:
+
+  # < ----- INDEX (measured) ----- >
+
+  - motor_id: 121            # index_joint_0 -> Index MCP AA
+    plot_joint: false
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      min_angle_deg: -20
+      max_angle_deg: 20
+      direction: 1
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 60.0
+      force_rendering_damping_velocity_threshold: 0.0
+      force_rendering_damping_max_current: 30
+      enable_force_rendering: false
+      gradual_rendering: true
+      force_rendering_gain: 0.22
+      force_rendering_alpha: 0.1
+      force_rendering_threshold_positive: 350
+      force_rendering_threshold_negative: 350
+      force_rendering_max_current: 50
+
+  - motor_id: 122            # index_joint_1 -> Index MCP FE
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      min_angle_deg: -10
+      max_angle_deg: 80
+      direction: 1
+    current_control:
+      # Unidirectional test (force-sign gate only):
+      force_rendering_flexion_only: true
+      force_rendering_flexion_direction_sign: 1.0
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 85.0
+      force_rendering_damping_velocity_threshold: 0
+      force_rendering_damping_max_current: 70
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.13 # 0.075
+      force_rendering_alpha: 0.08 # 0.15
+      force_rendering_threshold_positive: 100
+      force_rendering_threshold_negative: 185
+      force_rendering_max_current: 200
+      command_rate_limit_mA_per_s: 100
+
+  - motor_id: 123            # index_joint_2 -> Index PIP
+    plot_joint: true
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      min_angle_deg: 0
+      max_angle_deg: 80
+      direction: 1
+    current_control:
+      # Unidirectional test (force-sign gate only):
+      force_rendering_flexion_only: true
+      force_rendering_flexion_direction_sign: 1.0
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 60.0
+      force_rendering_damping_velocity_threshold: 0
+      force_rendering_damping_max_current: 40
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.16 # 0.07
+      force_rendering_alpha: 0.1 # 0.15
+      force_rendering_threshold_positive: 85
+      force_rendering_threshold_negative: 145
+      force_rendering_max_current: 200
+      command_rate_limit_mA_per_s: 250
+
+  # < ----- MIDDLE (measured — gains copied from index) ----- >
+
+  - motor_id: 131            # middle_joint_0 -> Middle MCP AA
+    plot_joint: false
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      min_angle_deg: -20
+      max_angle_deg: 20
+      direction: 1
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 60.0
+      force_rendering_damping_velocity_threshold: 0.0
+      force_rendering_damping_max_current: 30
+      enable_force_rendering: false
+      gradual_rendering: true
+      force_rendering_gain: 0.22
+      force_rendering_alpha: 0.1
+      force_rendering_threshold_positive: 350
+      force_rendering_threshold_negative: 350
+      force_rendering_max_current: 50
+
+  - motor_id: 132            # middle_joint_1 -> Middle MCP FE
+    plot_joint: false
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      min_angle_deg: -10
+      max_angle_deg: 80
+      direction: 1
+    current_control:
+      # Unidirectional test (force-sign gate only):
+      force_rendering_flexion_only: true
+      force_rendering_flexion_direction_sign: 1.0
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 85.0
+      force_rendering_damping_velocity_threshold: 0
+      force_rendering_damping_max_current: 70
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.095 # 0.065
+      force_rendering_alpha: 0.065 # 0.15
+      force_rendering_threshold_positive: 100
+      force_rendering_threshold_negative: 185
+      force_rendering_max_current: 200
+      command_rate_limit_mA_per_s: 100
+
+  - motor_id: 133            # middle_joint_2 -> Middle PIP
+    plot_joint: false
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      min_angle_deg: 0
+      max_angle_deg: 80
+      direction: 1
+    current_control:
+      # Unidirectional test (force-sign gate only):
+      force_rendering_flexion_only: true
+      force_rendering_flexion_direction_sign: 1.0
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 60.0
+      force_rendering_damping_velocity_threshold: 0
+      force_rendering_damping_max_current: 40
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.095 # 0.07
+      force_rendering_alpha: 0.07 # 0.15
+      force_rendering_threshold_positive: 85
+      force_rendering_threshold_negative: 145
+      force_rendering_max_current: 160
+      command_rate_limit_mA_per_s: 100
+
+  # < ----- THUMB (tactile) ----- >
+
+  - motor_id: 111            # thumb_joint_0 (proximal)
+    plot_joint: false
+    joint_settings:
+      motor_model: XC330
+      direction: 1
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 20.0
+      force_rendering_damping_velocity_threshold: 0.0
+      force_rendering_damping_max_current: 35
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.3
+      force_rendering_alpha: 0.25
+      force_rendering_threshold_positive: 0
+      force_rendering_threshold_negative: 0
+      force_rendering_max_current: 200
+      command_rate_limit_mA_per_s: 100
+
+  - motor_id: 112            # thumb_joint_1
+    plot_joint: false
+    joint_settings:
+      motor_model: XC330
+      direction: 1
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 25.0
+      force_rendering_damping_velocity_threshold: 0.0
+      force_rendering_damping_max_current: 35
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.35
+      force_rendering_alpha: 0.25
+      force_rendering_threshold_positive: 0
+      force_rendering_threshold_negative: 0
+      force_rendering_max_current: 200
+
+  - motor_id: 114            # thumb_joint_3 (distal)
+    plot_joint: false
+    joint_settings:
+      motor_model: XC330
+      direction: 1
+    current_control:
+      enable_force_rendering_damping: true
+      force_rendering_damping_gain: 20.0
+      force_rendering_damping_velocity_threshold: 0.0
+      force_rendering_damping_max_current: 30
+      enable_force_rendering: true
+      gradual_rendering: true
+      force_rendering_gain: 0.4
+      force_rendering_alpha: 0.1
+      force_rendering_threshold_positive: 0
+      force_rendering_threshold_negative: 0
+      force_rendering_max_current: 120
+
+follower:
+  mode: none
+  # Final Sharpa-side flexion biases after retarget/direct mapping: index and
+  # middle add 0.1 rad (~5.7 degrees); thumb DIP adds about 27.9 degrees.
+  command_offsets_rad:
+    "Index MCP Flexion/Extension": 0.15
+    "Index PIP Flexion/Extension": 0.0
+    "Middle MCP Flexion/Extension": 0.15
+    "Middle PIP Flexion/Extension": 0.0
+    "Thumb DIP Flexion/Extension": 0.487266
+
+
+control:
+  fingers:
+    index:  {position: joint, force: measured}
+    middle: {position: joint, force: measured}
+    thumb:  {position: retarget, force: tactile}
+  joint_map:
+    index:
+    - {ditto_joint: index_joint_0, sharpa_joint: right_index_MCP_AA, scale: 1.0}
+    - {ditto_joint: index_joint_1, sharpa_joint: right_index_MCP_FE, scale: 1.0}
+    - {ditto_joint: index_joint_2, sharpa_joint: right_index_PIP, scale: 1.0}
+    middle:
+    - {ditto_joint: middle_joint_0, sharpa_joint: right_middle_MCP_AA, scale: 1.0}
+    - {ditto_joint: middle_joint_1, sharpa_joint: right_middle_MCP_FE, scale: 1.0}
+    - {ditto_joint: middle_joint_2, sharpa_joint: right_middle_PIP, scale: 1.0}
+
+force_render:
+  modality_filters:
+    tactile:
+      torque_filter_alpha: 0.2
+    measured:
+      torque_filter_alpha: 1.0  # off — index/middle use per-joint filtering
+  joints:
+  - motor_id: 121
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 0.05
+  - motor_id: 122
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 0.05
+  - motor_id: 123
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 0.05
+  - motor_id: 131
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 0.05
+  - motor_id: 132
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 0.05
+  - motor_id: 133
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 0.05
+  - motor_id: 111
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 1.0
+  - motor_id: 112
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 1.0
+  - motor_id: 114
+    torque_to_mA: 1000.0
+    torque_filter_alpha: 1.0
+
+# Vibration motors (ditto_haptics). thumb/index/middle Fz -> motors 0/1/2.
+# contact_fade_s in thumb_index_middle_fade: vib fades out ~0.5s after engage.
+# update_hz: dedicated haptics thread rate (isolated from force worker).
+haptics:
+  enabled: true
+  config: thumb_index_middle_fade
+  vib_port: /dev/ttyACM0
+  vib_baud: 115200
+  update_hz: 40
+  identify: true

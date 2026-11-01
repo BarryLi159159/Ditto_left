@@ -1,0 +1,12 @@
+defaults:
+  - u2d2: leader_id1
+  - hand_config: ditto_3f_measured_tactile_haptics
+  - motor_models: default
+  - joint_configs: default
+  - sharpa: default
+  - _self_
+
+control_frequency: 200
+verbose: false
+show_current_breakdown: false
+show_perf: false

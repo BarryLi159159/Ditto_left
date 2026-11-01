@@ -1,0 +1,39 @@
+# @package hand_config
+# NOTE: This configuration has not been adapted to new units and motor model specific conversions.
+
+leader:
+  mode: current
+  motor_ids:
+  - 21
+  general_settings:
+    current_limit: 2300
+    current_command: 0
+  joint_settings:
+  - motor_id: 21
+    current_control:
+      enable_coulomb_comp: true
+      enable_static_comp: true
+      enable_damping_comp: false
+      enable_force_rendering: true
+      mu_coulomb_cw: 2.0
+      mu_coulomb_ccw: 9.0
+      mu_static_amplitude: 30.0
+      static_threshold_cw: 0.007
+      static_threshold_ccw: 0.007
+      static_frequency: 250.0
+      mu_damping: 0.03
+      force_rendering_gain: 0.05
+      force_rendering_alpha: 0.95
+      force_rendering_threshold: 50.0
+      force_rendering_max_current: 2300
+follower:
+  mode: position
+  motor_ids:
+  - 121
+  offsets: {121: 0}
+  general_settings:
+    velocity_limit: 150
+    p_gain: 500
+    i_gain: 0
+    d_gain: 0
+control_frequency: 250

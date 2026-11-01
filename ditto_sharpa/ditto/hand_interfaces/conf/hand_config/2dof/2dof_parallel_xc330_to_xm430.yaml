@@ -1,0 +1,64 @@
+# @package hand_config
+
+control_frequency: 300
+
+leader:
+  mode: current
+  motor_ids: [11, 21]
+  general_settings:
+    current_limit: 1500
+  joint_settings:
+  - motor_id: 11
+    current_control:
+      enable_coulomb_comp: false
+      enable_static_comp: false
+      enable_damping_comp: false
+      enable_force_rendering: true
+      force_rendering_gain: 0.3 # 0.2
+      force_rendering_alpha: 0.95
+      force_rendering_threshold: 0.0 # 125.0
+      force_rendering_max_current: 1500
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      # direction: 1
+  - motor_id: 21
+    current_control:
+      enable_coulomb_comp: false
+      enable_static_comp: false
+      enable_damping_comp: false
+      enable_force_rendering: true
+      force_rendering_gain: 0.3 # 0.2
+      force_rendering_alpha: 0.95
+      force_rendering_threshold: 0.0 # 125.0
+      force_rendering_max_current: 1500
+    joint_settings:
+      motor_model: XC330
+      zero_position: 2048
+      # direction: 1
+
+follower:
+  mode: position
+  motor_ids: [111, 121]
+  offsets: {111: 0, 121: 0}
+  general_settings:
+    velocity_limit: 200
+    p_gain: 1000
+    i_gain: 0
+    d_gain: 60
+  joint_settings:
+  - motor_id: 111
+    joint_settings:
+      motor_model: XM430
+      zero_position: 2048
+      min_angle_deg: -45
+      max_angle_deg: 70
+      # direction: 1
+  - motor_id: 121
+    joint_settings:
+      motor_model: XM430
+      zero_position: 2048
+      min_angle_deg: -70
+      max_angle_deg: 45
+      # direction: 1
+  

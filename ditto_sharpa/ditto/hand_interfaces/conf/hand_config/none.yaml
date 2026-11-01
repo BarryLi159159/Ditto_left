@@ -1,0 +1,12 @@
+# @package hand_config
+#
+# Default when no hand_config override: no hardware. Override for real teleop, e.g.
+#   hand_config=2dof/2dof_parallel_xc330_to_xm430
+
+leader:
+  mode: none
+  motor_ids: []
+
+follower:
+  mode: none
+  motor_ids: []

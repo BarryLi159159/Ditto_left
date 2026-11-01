@@ -1,0 +1,32 @@
+# @package hand_config
+
+control_frequency: 200
+
+leader:
+  mode: agent
+
+follower:
+  mode: position
+  motor_ids: [111, 121]
+  offsets: {111: 0, 121: 0}
+  general_settings:
+    velocity_limit: 200
+    p_gain: 500
+    i_gain: 0
+    d_gain: 30
+  joint_settings:
+  - motor_id: 111
+    joint_settings:
+      motor_model: XM430
+      zero_position: 2048
+      min_angle_deg: -45
+      max_angle_deg: 70
+      # direction: 1
+  - motor_id: 121
+    joint_settings:
+      motor_model: XM430
+      zero_position: 2048
+      min_angle_deg: -70
+      max_angle_deg: 45
+      # direction: 1
+  
