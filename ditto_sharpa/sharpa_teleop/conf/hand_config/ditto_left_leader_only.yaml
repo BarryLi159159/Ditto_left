@@ -12,7 +12,7 @@
 # hand (all -1), as expected for a mirrored mechanism.
 # Verified joint by joint against the mirrored URDF on 2026-10-30;
 # zeros re-trimmed 2026-11-02 after re-mounting (slider offsets 121:+7 122:+2
-# 123:-4 111:+4.7 112:+5 114:0 deg folded in).
+# 123:-4 111:+4.7 112:+5 114:0 deg folded in); 121 trimmed a further -2 deg 2026-11-03.
 
 control_frequency: 200
 
@@ -30,7 +30,7 @@ leader:
     plot_joint: true
     joint_settings:
       motor_model: XC330
-      zero_position: 2059
+      zero_position: 2036
       direction: -1
   - motor_id: 122            # index_joint_1 (MCP flex)
     plot_joint: true
