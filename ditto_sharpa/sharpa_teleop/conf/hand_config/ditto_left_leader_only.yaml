@@ -36,19 +36,19 @@ leader:
     plot_joint: true
     joint_settings:
       motor_model: XC330
-      zero_position: 2021
+      zero_position: 2044
       direction: -1
   - motor_id: 123            # index_joint_2 (PIP flex)
     plot_joint: true
     joint_settings:
       motor_model: XC330
-      zero_position: 2029
+      zero_position: 2086
       direction: -1
   - motor_id: 111            # thumb_joint_0 (swing)
     plot_joint: true
     joint_settings:
       motor_model: XC330
-      zero_position: 2090
+      zero_position: 2101
       direction: -1
   - motor_id: 112            # thumb_joint_1
     plot_joint: true
@@ -60,7 +60,7 @@ leader:
     plot_joint: true
     joint_settings:
       motor_model: XC330
-      zero_position: 2076
+      zero_position: 2053
       direction: -1
 
 follower:
