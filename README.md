@@ -44,6 +44,17 @@ until the model matches your hand, click "Print zero_position for yaml", and
 copy the printed values into the yaml. If a joint moves the wrong way, flip its
 `direction`.
 
-The model's thumb draws four segments; the third (`thumb_joint_2`, the removed
-motor 113) is a fixed joint whose bracket has the same reach, so the kinematics
-match the 3-motor hardware.
+The model's thumb matches the 3-motor hardware: three segments driven by
+`thumb_joint_0/1/3` (motors 111/112/114), mirrored from the latest right-hand
+CAD export. Its kinematics equal the earlier 4-segment model, so existing
+calibrations carry over.
+
+## Checking the model against the printed parts
+The viewer's "Index-thumb gap (model)" panel shows, live, the closest gap
+between the printed distal parts of the index and thumb in the model (plus the
+pad- and tip-frame distances). Calibrate the zeros first, then hold a pose (for
+example a pinch), measure the real gap between the same printed parts with a
+caliper, type it in "Caliper gap", and click "Log this pose". Rows go to
+`ditto_sharpa/pad_gap_log.csv` (joint angles, model gap, caliper gap) for
+deciding which link lengths in the URDF to adjust. Gaps above 10 mm are shown
+coarse (~1 mm); overlapping parts read as 0.
