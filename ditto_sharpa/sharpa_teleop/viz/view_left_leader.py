@@ -9,6 +9,9 @@ leaving missing joints at 0, so the viewer can render.
 "zero calibration" GUI folder: per-joint offset sliders (deg) applied live,
 and a button that prints the equivalent zero_position counts for the
 hand_config yaml. Run it without ``--3f``.
+``--left`` also adds an "Index-thumb gap (model)" panel (viz/pad_gap.py): the
+live closest gap between the printed index and thumb tip parts, with a button
+that logs the pose and a caliper reading to pad_gap_log.csv.
 
 The viser server is pinned to 127.0.0.1.
 
@@ -46,6 +49,10 @@ if left:
 
     LEFT_URDF = ASSETS_DIR / "ditto_left_leader" / "ditto_left_leader.urdf"
     VA.ditto_leader_urdf = lambda *args, **kwargs: LEFT_URDF
+
+    import viz.pad_gap as PG  # noqa: E402
+
+    PG.install(get_server=lambda: _server["obj"], urdf_path=LEFT_URDF)
 
 # Which hand_config is in use (for printing zero_position with the right direction).
 hc_name = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("hand_config=")), None)
