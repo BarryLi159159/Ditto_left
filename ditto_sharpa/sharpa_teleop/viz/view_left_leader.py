@@ -12,6 +12,9 @@ hand_config yaml. Run it without ``--3f``.
 ``--left`` also adds an "Index-thumb gap (model)" panel (viz/pad_gap.py): the
 live closest gap between the printed index and thumb tip parts, with a button
 that logs the pose and a caliper reading to pad_gap_log.csv.
+``--spikeatac`` (with ``--left``) uses the SpikeATac-tip variant instead
+(retargeting/assets/ditto_left_leader_spikeatac): same joints, fingertips
+replaced by tip adapter + SpikeATac. Default without it is unchanged.
 
 The viser server is pinned to 127.0.0.1.
 
@@ -19,6 +22,7 @@ Usage (from ditto_sharpa/):
     python sharpa_teleop/viz/view_left_leader.py --left --ditto --leader-only \
         u2d2.usb_port=/dev/cu.usbserial-XXXX hand_config=ditto_left_leader_only
     python sharpa_teleop/viz/view_left_leader.py --left --leader-only      # sliders only
+    python sharpa_teleop/viz/view_left_leader.py --left --spikeatac --leader-only hand_config=ditto_left_leader_only
     python sharpa_teleop/viz/view_left_leader.py --3f --ditto --leader-only u2d2.usb_port=...   # right hand
 """
 import re
@@ -36,7 +40,8 @@ for p in (pkg, repo):
     sys.path.insert(0, str(p))
 
 left = "--left" in sys.argv
-sys.argv = [a for a in sys.argv if a != "--left"]
+spikeatac = "--spikeatac" in sys.argv
+sys.argv = [a for a in sys.argv if a not in ("--left", "--spikeatac")]
 
 from hardware_interfaces.ditto_leader import session as S  # noqa: E402
 from retargeting.paths import ASSETS_DIR, DITTO_3F_LEADER_JOINT_NAMES, DITTO_3F_THUMB_JOINT_NAMES, DITTO_INDEX_JOINT_NAMES  # noqa: E402
@@ -47,7 +52,9 @@ MOTOR_FOR_JOINT = dict(zip(DITTO_3F_LEADER_JOINT_NAMES, (121, 122, 123, 131, 132
 if left:
     import viz.view_assets as VA  # noqa: E402
 
-    LEFT_URDF = ASSETS_DIR / "ditto_left_leader" / "ditto_left_leader.urdf"
+    LEFT_URDF = (ASSETS_DIR / "ditto_left_leader_spikeatac" / "ditto_left_leader_spikeatac.urdf" if spikeatac
+                 else ASSETS_DIR / "ditto_left_leader" / "ditto_left_leader.urdf")
+    print(f"left leader model: {LEFT_URDF}", flush=True)
     VA.ditto_leader_urdf = lambda *args, **kwargs: LEFT_URDF
 
     import viz.pad_gap as PG  # noqa: E402
