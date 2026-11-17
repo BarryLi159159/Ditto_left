@@ -49,6 +49,19 @@ The model's thumb matches the 3-motor hardware: three segments driven by
 CAD export. Its kinematics equal the earlier 4-segment model, so existing
 calibrations carry over.
 
+## SpikeATac fingertip variant
+`retargeting/assets/ditto_left_leader_spikeatac/` is the same left hand with
+the fingertips replaced by a tip adapter + SpikeATac on the last motor bracket
+(see its README). Same joints and calibration. View it with:
+
+    cd ditto_sharpa
+    python sharpa_teleop/viz/view_left_leader.py --left --spikeatac --ditto --leader-only \
+        "u2d2.usb_port=/dev/cu.usbserial-XXXX" hand_config=ditto_left_leader_only
+    python sharpa_teleop/viz/view_left_leader.py --left --spikeatac --leader-only \
+        hand_config=ditto_left_leader_only        # no glove: sliders only
+
+`run_viewer.sh` keeps using the default model.
+
 ## Checking the model against the printed parts
 The viewer's "Index-thumb gap (model)" panel shows, live, the closest gap
 between the printed distal parts of the index and thumb in the model (plus the

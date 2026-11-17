@@ -2,8 +2,8 @@
 
 Shows, in a viser GUI folder, updated ~5x per second from the model pose:
   - closest gap between the printed distal parts of the index
-    (index_link_2 + index_fingerpad + index_fingertip) and of the thumb
-    (thumb_link_3 + thumb_fingerpad + thumb_fingertip) mesh surfaces, in mm.
+    (index_link_2 + index_fingerpad + index_fingertip, or tip adapter +
+    SpikeATac) and of the thumb (same parts on thumb_link_3) mesh surfaces, in mm.
     This is the number to compare with a caliper on the real glove.
   - distance between the index_fingerpad and thumb_fingerpad frame origins and
     between the *_fingertip frame origins (frames are not on the surfaces, so
@@ -35,8 +35,10 @@ import trimesh
 from scipy.spatial import cKDTree
 from viser.extras import ViserUrdf
 
-INDEX_LINKS = ("index_link_2", "index_fingerpad", "index_fingertip")
-THUMB_LINKS = ("thumb_link_3", "thumb_fingerpad", "thumb_fingertip")
+# Distal parts per finger; links missing from a model are skipped (the
+# SpikeATac variant has *_tip_adapter + *_spikeatac instead of *_fingertip).
+INDEX_LINKS = ("index_link_2", "index_fingerpad", "index_fingertip", "index_tip_adapter", "index_spikeatac")
+THUMB_LINKS = ("thumb_link_3", "thumb_fingerpad", "thumb_fingertip", "thumb_tip_adapter", "thumb_spikeatac")
 SAMPLE_SPACING_M = 0.0005  # dense surface sample spacing
 COARSE_SPACING_M = 0.002  # coarse surface sample spacing
 REFINE_BELOW_M = 0.010  # refine only when the coarse gap is below this
@@ -198,7 +200,8 @@ def install(get_server, urdf_path: Path) -> None:
             state["last"] ={"names": names, "q": q, "gap": gap, "refined": refined, "pad": pad, "tip": tip}
             if state["gui"] is not None:
                 head = f"**Closest surface gap: {gap:.2f} mm**" if refined else f"**Closest surface gap: ~{gap:.0f} mm** (coarse, >10 mm)"
-                state["gui"].content = f"{head}  \nPad frame distance: {pad:.2f} mm  \nTip frame distance: {tip:.2f} mm"
+                tip_line = f"  \nTip frame distance: {tip:.2f} mm" if np.isfinite(tip) else ""
+                state["gui"].content = f"{head}  \nPad frame distance: {pad:.2f} mm{tip_line}"
 
     ViserUrdf.update_cfg = update_cfg
     threading.Thread(target=worker, name="pad_gap", daemon=True).start()
